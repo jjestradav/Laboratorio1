@@ -29,6 +29,15 @@ public class Ciclo {
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;
     }
+    
+    public Ciclo(int codigo, char numeroCiclo, int anho) {
+   
+        this.codigo=codigo;
+        this.anho = anho;
+        this.numeroCiclo = numeroCiclo;
+        this.fechaInicio = null;
+        this.fechaFinal = null;
+    }
 
     public int getCodigo() {
         return codigo;

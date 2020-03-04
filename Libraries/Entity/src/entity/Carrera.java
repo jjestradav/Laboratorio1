@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Carrera {
     
-    private int codigo;
+    private String codigo;
     private String nombre;
     private String titulo;
     List<Curso> cursos;
@@ -23,18 +23,18 @@ public class Carrera {
         this.cursos=new ArrayList<>();
     }
 
-    public Carrera(int codigo, String nombre, String titulo) {
+    public Carrera(String codigo, String nombre, String titulo) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.titulo = titulo;
         this.cursos=new ArrayList<>();
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

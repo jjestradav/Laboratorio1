@@ -5,6 +5,14 @@
  */
 package service;
 
+import entity.Alumno;
+import entity.Grupo;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author jonathan
@@ -31,6 +39,67 @@ public class ServiceGrupoAlumno {
             instance=new ServiceGrupoAlumno();
         
         return instance;
+    }
+    
+    public List<Alumno> buscarAlumnosPorGrupo(Grupo grupo) throws Exception{
+        
+        try{
+            this.service.conectar();
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        
+          CallableStatement statement=null;
+             ResultSet rs=null;
+        try{
+           
+                     
+                     this.service.getConnection().prepareCall(ELIMINAR_CURSO);
+                     statement.registerOutParameter(1, Types.OTHER);
+                     statement.setInt(1, grupo.getNumeroGrupo());
+                     rs=statement.executeQuery();
+                     List<Alumno> result= new ArrayList<>();
+                     while(rs.next()){
+                         //
+                     }
+                     return result;
+             
+             
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        finally{
+            try{
+            if(rs != null)
+                rs.close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                throw e;
+            }
+            try{
+            if(statement != null){
+                statement.close();
+            }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                  throw e;
+            }
+            try{
+            this.service.desconectar();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                  throw e;
+            }
+        }
+     
     }
     
 }

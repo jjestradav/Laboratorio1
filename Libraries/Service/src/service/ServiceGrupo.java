@@ -5,7 +5,13 @@
  */
 package service;
 
+import dto.AlumnoDTO;
+import dto.GrupoAlumnoDTO;
+import entity.Alumno;
+import entity.Ciclo;
+import entity.Curso;
 import entity.Grupo;
+import entity.GrupoAlumno;
 import entity.Profesor;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -21,7 +27,7 @@ import java.util.List;
 public class ServiceGrupo {
     
     private Service service= Service.getInstance();
-    private static final String LISTAR_PROFESOR_POR_GRUPO="{?=call buscarGrupoPorProfesor(?)}";
+    private static final String LISTAR_PROFESOR_POR_GRUPO="{?=call grupoProfesor(?,?)}";
     
         private static ServiceGrupo instance=null;
 
@@ -37,55 +43,71 @@ public class ServiceGrupo {
         return instance;
     }
     
-    public List<Grupo> buscarGrupoPorProfesor(Profesor profesor) throws Exception{
-        
+    public List<GrupoAlumnoDTO> buscarGrupoPorProfesor(Profesor profesor, Curso cur) throws Exception{
         try{
-            this.service.conectar();
+          this.service.conectar();
+          this.service.getConnection().setAutoCommit(false);
         }
         catch(Exception e){
+            e.printStackTrace();
             throw e;
         }
+        
+        
+            CallableStatement call=null;
+        ResultSet rs=null;
         try{
-            CallableStatement statement=this.service.getConnection().prepareCall(LISTAR_PROFESOR_POR_GRUPO);
-            statement.setString(1, profesor.getCedula());
-            statement.registerOutParameter(1, Types.OTHER);
-            ResultSet rs=statement.executeQuery();
-            List<Grupo> result= new ArrayList<>();
-            
-            while(rs.next()){
-                //rs.get()
-                //result.add()
-            }
-            try{
-                rs.close();
-            }
-            catch(Exception e){
+        
+                
+               call= this.service.getConnection().prepareCall(LISTAR_PROFESOR_POR_GRUPO);
+               call.setString(2,profesor.getCedula() );
+                call.setInt(3, cur.getCodigo() );
+               call.registerOutParameter(1, Types.OTHER);
+              
+
+               call.execute();
+               rs=(ResultSet) call.getObject(1);
+               List<GrupoAlumnoDTO> result=new ArrayList<>();
+               while(rs.next()){
+                   GrupoAlumnoDTO gruAl= new GrupoAlumnoDTO(rs.getInt("grupo"),new AlumnoDTO(rs.getString("cedula"),rs.getString("nombreAlumno")),
+                   rs.getInt("nota"));
+                   result.add(gruAl);
+                   
+               }
+               return result;
+
+           
+        }
+        catch(Exception e){
+             e.printStackTrace();
                 throw e;
-            }
-            
+        }
+        finally{
              try{
-                statement.close();
+                if(rs != null)
+                    rs.close();
             }
-            catch(Exception e){
-               throw e; 
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
             }
               try{
-                this.service.desconectar();
+                if(call != null)
+                    call.close();
             }
-            catch(Exception e){
+            catch (Exception e){
+                e.printStackTrace();
                 throw e;
             }
-            
-            return result;
+               try{
+                this.service.desconectar();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+                
+            }
         }
-        
-        catch(Exception e){
-            
-            throw e;
-        }
-       
-        
-        
       
     }
     

@@ -6,13 +6,16 @@
 package service;
 
 import entity.Profesor;
+import entity.Usuario;
 import exception.GlobalException;
 import exception.NoDataException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  *
@@ -24,7 +27,7 @@ public class ServiceProfesor  {
      
     private static final String INSERTAR_PROFESOR = "{call INSERTAR_PROFESOR(?,?,?,?)}";
     private static final String MODIFICAR_PROFESOR = "{call MODIFICAR_PROFESOR(?,?,?,?)}";
-    private static final String BUSCAR_PROFESOR = "{?=call BUSCAR_PROFESOR(?)}";
+    private static final String BUSCAR_PROFESOR = "{?=call getProfesor(?)}";
     private static final String LISTAR_PROFESOR = "{?=call LISTAR_PROFESOR()}";
     private static final String ELIMINAR_PROFESOR = "{call ELIMINAR_PROFESOR(?)}";
 
@@ -249,5 +252,71 @@ public class ServiceProfesor  {
                 throw new GlobalException("Estatutos invalidos o nulos");
             }
         }
+    }
+    
+    
+    
+     public Optional<Profesor> getProfesor(Profesor profe) throws Exception{
+        try{
+          this.service.conectar();
+          this.service.getConnection().setAutoCommit(false);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        
+        
+            CallableStatement call=null;
+        ResultSet rs=null;
+        try{
+        
+                
+               call= this.service.getConnection().prepareCall(BUSCAR_PROFESOR);
+               call.registerOutParameter(1, Types.OTHER);
+               call.setString(2, profe.getCedula());
+
+               call.execute();
+               rs=(ResultSet) call.getObject(1);
+               
+               if(rs.next()){
+                   Profesor opt= new Profesor(rs.getString("cedula"),rs.getString("nombre"),rs.getInt("telefono"),rs.getString("email"));
+                   return Optional.of(opt);
+               }
+               else
+                   return Optional.empty();
+           
+        }
+        catch(Exception e){
+             e.printStackTrace();
+                throw e;
+        }
+        finally{
+             try{
+                if(rs != null)
+                    rs.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+            }
+              try{
+                if(call != null)
+                    call.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+            }
+               try{
+                this.service.desconectar();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+                
+            }
+        }
+        
     }
 }

@@ -18,7 +18,11 @@ public class Profesor {
 
     public Profesor() {
     }
-
+    
+    public Profesor(String cedula){
+        this.cedula=cedula;
+    }
+    
     public Profesor(String cedula, String nombre, int telefono, String email) {
         this.cedula = cedula;
         this.nombre = nombre;

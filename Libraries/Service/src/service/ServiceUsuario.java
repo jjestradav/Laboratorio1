@@ -5,48 +5,41 @@
  */
 package service;
 
+import entity.Usuario;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.Types;
+import java.util.Optional;
+
 /**
  *
  * @author jonathan
  */
-import entity.Ciclo;
-import entity.Curso;
-import entity.Profesor;
-import exception.GlobalException;
-import exception.NoDataException;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-
-public class ServiceCurso  {
+public class ServiceUsuario {
     
-     private Service service= Service.getInstance();
+    private Service service= Service.getInstance();
      
 
-    private static final String CURSO_PROFESOR = "{?=call cursoProfesor(?,?)}";
+    private static final String BUSCAR_USUARIO = "{?=call getUsuario(?,?)}";
 
-      private static ServiceCurso instance=null;
 
-    private ServiceCurso() {
+       private static ServiceUsuario instance=null;
+
+    private ServiceUsuario() {
 
     }
     
-    public static ServiceCurso getInstance(){
+    public static ServiceUsuario getInstance(){
      
         if(instance==null)
-            instance=new ServiceCurso();
+            instance=new ServiceUsuario();
         
         return instance;
     }
-
-    public List<Curso> getCursosPorProfesor(Profesor profe,Ciclo ciclo) throws Exception{
-         try{
+    
+    
+    public Optional<Usuario> getUsuario(Usuario us) throws Exception{
+        try{
           this.service.conectar();
           this.service.getConnection().setAutoCommit(false);
         }
@@ -61,21 +54,20 @@ public class ServiceCurso  {
         try{
         
                 
-               call= this.service.getConnection().prepareCall(CURSO_PROFESOR);
-             
+               call= this.service.getConnection().prepareCall(BUSCAR_USUARIO);
                call.registerOutParameter(1, Types.OTHER);
-                call.setString(2, profe.getCedula());
-                 call.setInt(3, ciclo.getCodigo());
+               call.setString(2, us.getCedula());
+               call.setString(3, us.getPassword());
+               call.setCursorName("refcursor");
                call.execute();
                rs=(ResultSet) call.getObject(1);
-               List<Curso> result=new ArrayList<>();
-               while(rs.next()){
-                Curso cur=new Curso(rs.getInt("codigo"),rs.getString("nombre"));
-                result.add(cur);
-                   
+               
+               if(rs.next()){
+                   Usuario user= new Usuario(rs.getString("cedula"),rs.getString("rol"));
+                   return Optional.of(user);
                }
-               return result;
-
+               else
+                   return Optional.empty();
            
         }
         catch(Exception e){

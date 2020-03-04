@@ -29,6 +29,10 @@ public class Alumno {
         this.email = email;
         this.fechaNacimiento = fechaNacimiento;
     }
+    
+       public Alumno(String cedula) {
+        this.cedula = cedula;
+    }
 
     public String getCedula() {
         return cedula;

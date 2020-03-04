@@ -20,6 +20,11 @@ public class Grupo {
 
     public Grupo() {
     }
+    
+    public Grupo(int codigo) {
+        this.codigo = codigo;
+
+    }
 
     public Grupo(int codigo, Ciclo ciclo, Curso curso, Profesor profesor, String horario, int numeroGrupo) {
         this.codigo = codigo;
