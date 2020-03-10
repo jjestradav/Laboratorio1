@@ -74,7 +74,7 @@ public class LoginController {
                 if(!optProfe.isPresent())
                     throw new Exception();
                 session.setAttibute("user", optProfe.get());
-                CiclosController nextView=(CiclosController)session.getAttribute("cicloController");
+                CiclosController nextView=(CiclosController)session.getAttribute("ciclosController");
                 if(nextView!=null){
                     this.hide();
                     nextView.show();

@@ -1,0 +1,27 @@
+	CREATE OR REPLACE FUNCTION grupoAlumnoPorGrupo( _codigogrupo int)
+RETURNS refcursor AS $$
+DECLARE ref refcursor;
+BEGIN
+OPEN ref FOR select grupoalumno.grupo as codigo, alumno.cedula as cedula, alumno.nombre as nombre,
+grupoalumno.nota as nota from grupo,alumno,grupoalumno where grupoalumno.grupo=grupo.codigo and
+grupo.codigo=_codigogrupo and alumno.cedula=grupoalumno.alumno;
+RETURN ref;
+END;
+$$ LANGUAGE plpgsql;    
+
+
+
+
+CREATE OR REPLACE FUNCTION actualizarNota(text, real, int) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
+BEGIN 
+update grupoalumno set nota=$2 where grupoalumno.alumno=$1 and
+grupoalumno.grupo=$3;
+
+RETURN FOUND;
+END;
+$$;
+
+
+ALTER TABLE grupoalumno
+ALTER COLUMN nota TYPE decimal;
+

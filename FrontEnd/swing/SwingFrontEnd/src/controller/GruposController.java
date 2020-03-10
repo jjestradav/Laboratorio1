@@ -9,46 +9,44 @@ import data.Session;
 import dto.GrupoAlumnoDTO;
 import entity.Curso;
 import entity.Grupo;
-import entity.Profesor;
 import java.awt.Point;
 import java.util.List;
 import javax.swing.JOptionPane;
-import service.ServiceGrupo;
-import view.CursosView;
-import viewmodel.CursosViewModel;
+import service.ServiceGrupoAlumno;
+import view.GruposView;
+import viewmodel.GruposViewModel;
 
 /**
  *
  * @author jonathan
  */
-public class CursosController {
+public class GruposController {
 
-    private final ServiceGrupo gruposRepo = ServiceGrupo.getInstance();
+    private final ServiceGrupoAlumno grupoAlumnoRepo = ServiceGrupoAlumno.getInstance();
     private final Session session = Session.getInstance();
-    private CursosViewModel model;
-    private CursosView view;
+    private GruposViewModel model;
+    private GruposView view;
 
-    public CursosController(CursosViewModel model, CursosView view) {
+    public GruposController(GruposViewModel model, GruposView view) {
         this.model = model;
         this.view = view;
         this.view.setController(this);
         this.view.setModel(model);
-        // this.setComboBox();
     }
 
-    public CursosViewModel getModel() {
+    public GruposViewModel getModel() {
         return model;
     }
 
-    public void setModel(CursosViewModel model) {
+    public void setModel(GruposViewModel model) {
         this.model = model;
     }
 
-    public CursosView getView() {
+    public GruposView getView() {
         return view;
     }
 
-    public void setView(CursosView view) {
+    public void setView(GruposView view) {
         this.view = view;
     }
 
@@ -64,16 +62,17 @@ public class CursosController {
         view.setLocation(position);
         this.show();
     }
-
+    
     public void setComboBox() {
 
         try {
 
-            List<Curso> result = (List<Curso>) this.session.getAttribute("cursos");
+            List<Grupo> result = (List<Grupo>) this.session.getAttribute("grupos");
 
-            //if(result==null)
-            //  throw new Exception();
-            this.model.setCursos(result);
+            if(result==null)
+              throw new Exception();
+            
+            this.model.setGrupos(result);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,24 +82,28 @@ public class CursosController {
 
     }
 
-    public void goToGrupos(Curso cur) {
+    public void goToNotas(Grupo grupo) {
 
         try {
-            List<Grupo> result = this.gruposRepo.buscarGrupoPorCurso(cur);
-            session.setAttibute("grupos", result);
-            GruposController nextView = (GruposController) session.getAttribute("gruposController");
+            List<GrupoAlumnoDTO> result = this.grupoAlumnoRepo.buscarGrupoPorProfesor(grupo);
+            System.out.println(result);
+            session.setAttibute("estudiantes", result);
+            session.setAttibute("selectedGrupo", grupo);
+            NotasController nextView= (NotasController)session.getAttribute("notasController");
+            nextView.setTableModel();
+            nextView.getView().updateTable();
+            nextView.setTitle("Grupo "+grupo.getNumeroGrupo());
             this.hide();
             nextView.show();
 
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this.view,
-                    "Ha Ocurrido un error al cargar los datos", "Error!", JOptionPane.ERROR_MESSAGE);
         }
+
     }
     
     public void goBack(Point point){
-        CiclosController before=(CiclosController) session.getAttribute("ciclosController");
+        CursosController before=(CursosController) session.getAttribute("cursosController");
         this.hide();
         before.show(point);
     }

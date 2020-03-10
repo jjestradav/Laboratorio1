@@ -13,12 +13,12 @@ public class GrupoAlumnoDTO {
     
     private int grupo;
     private AlumnoDTO alumno;
-    private int nota;
+    private float nota;
 
     public GrupoAlumnoDTO() {
     }
 
-    public GrupoAlumnoDTO(int grupo, AlumnoDTO alumno, int nota) {
+    public GrupoAlumnoDTO(int grupo, AlumnoDTO alumno, float nota) {
         this.grupo = grupo;
         this.alumno = alumno;
         this.nota = nota;
@@ -40,11 +40,11 @@ public class GrupoAlumnoDTO {
         this.alumno = alumno;
     }
 
-    public int getNota() {
+    public float getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(float nota) {
         this.nota = nota;
     }
     

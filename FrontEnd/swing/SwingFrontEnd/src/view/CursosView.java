@@ -6,6 +6,11 @@
 package view;
 
 import controller.CursosController;
+import entity.Curso;
+import static java.awt.SystemColor.window;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowListener;
 import viewmodel.CursosViewModel;
 
 /**
@@ -21,7 +26,14 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
     /**
      * Creates new form CursosView
      */
+    public CursosView(CursosViewModel model, CursosController controller) {
+        this.setModel(model);
+        this.setController(controller);
+        initComponents();
+    }
+    
     public CursosView() {
+        
         initComponents();
     }
 
@@ -31,6 +43,7 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
 
     public void setModel(CursosViewModel model) {
         this.model = model;
+          model.addObserver(this);
     }
 
     public CursosController getController() {
@@ -42,12 +55,72 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
     }
     
     
-    
+    private   void updateComboBoxes(){
+      
+  //this.controller.setComboBox();
+  //System.out.println("ADIOS");
+  //System.out.println(this.controller.getModel().getCiclos());
+  //if(this.controller.getModel().getCursos()!= null)
+    this.cursosComboBox.setModel(this.controller.getModel().getCursos());
+  
+  }
     
         @Override
     public void update(java.util.Observable updatedModel,Object parametros){
-        this.controller.setComboBox();
+          System.out.println("ADIOS");
+       this.updateComboBoxes();
     }
+   
+   
+   class CustomComponentListener implements ComponentListener {
+       
+       private final CursosView  view;
+       
+       public CustomComponentListener(CursosView view){
+           this.view=view;
+       }
+
+       @Override
+      public void componentResized(ComponentEvent e) {
+
+      }
+
+       @Override
+      public void componentMoved(ComponentEvent e) {
+
+      }
+
+       @Override
+      public void componentShown(ComponentEvent e) {
+       this.view.getController().setComboBox();
+      }
+
+       @Override
+      public void componentHidden(ComponentEvent e) {
+
+      }
+   }
+
+    @Override
+    public synchronized void addComponentListener(ComponentListener cl) {
+       
+       cl=new CustomComponentListener(this);
+
+        super.addComponentListener(cl); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Curso toCurso(){
+        return (Curso)this.cursosComboBox.getSelectedItem();
+    }
+    
+//   .addComponentListener(new ComponentAdapter() {
+//   public void componentHidden(ComponentEvent e) {
+//      /* code run when component hidden*/
+//   }
+//   public void componentShown(ComponentEvent e) {
+//      /* code run when component shown */
+//   }
+//});
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,6 +134,7 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
         jLabel1 = new javax.swing.JLabel();
         cursosComboBox = new javax.swing.JComboBox<>();
         verButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +146,14 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
         verButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verButtonActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("DejaVu Sans", 3, 10)); // NOI18N
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -89,17 +171,19 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
                         .addComponent(cursosComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(125, 125, 125)
-                        .addComponent(verButton)))
+                        .addComponent(verButton))
+                    .addComponent(jButton1))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addComponent(jButton1)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cursosComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(verButton)
                 .addGap(20, 20, 20))
         );
@@ -108,8 +192,12 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
     }// </editor-fold>//GEN-END:initComponents
 
     private void verButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verButtonActionPerformed
-        // TODO add your handling code here:
+       this.controller.goToGrupos(this.toCurso());
     }//GEN-LAST:event_verButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      this.controller.goBack(this.getLocation());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,7 +205,13 @@ public class CursosView extends javax.swing.JFrame implements java.util.Observer
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cursosComboBox;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton verButton;
     // End of variables declaration//GEN-END:variables
 }
+
+
+
+
+

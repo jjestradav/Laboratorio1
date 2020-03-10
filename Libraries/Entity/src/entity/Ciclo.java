@@ -38,6 +38,13 @@ public class Ciclo {
         this.fechaInicio = null;
         this.fechaFinal = null;
     }
+    
+      public Ciclo(int codigo) {
+   
+        this.codigo=codigo;
+        this.fechaInicio = null;
+        this.fechaFinal = null;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -81,7 +88,7 @@ public class Ciclo {
 
     @Override
     public String toString() {
-        return "Ciclo{" + "codigo=" + codigo + ", anho=" + anho + ", numeroCiclo=" + numeroCiclo + ", fechaInicio=" + fechaInicio + ", fechaFinal=" + fechaFinal + '}';
+        return "Ciclo "+this.numeroCiclo+" "+this.anho; 
     }
     
     

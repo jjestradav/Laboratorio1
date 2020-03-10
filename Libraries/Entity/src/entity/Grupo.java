@@ -85,7 +85,7 @@ public class Grupo {
 
     @Override
     public String toString() {
-        return "Grupo{" + "codigo=" + codigo + ", ciclo=" + ciclo + ", curso=" + curso + ", profesor=" + profesor + ", horario=" + horario + ", numeroGrupo=" + numeroGrupo + '}';
+        return "Grupo "+this.numeroGrupo+" ( "+this.horario+" )";
     }
     
     

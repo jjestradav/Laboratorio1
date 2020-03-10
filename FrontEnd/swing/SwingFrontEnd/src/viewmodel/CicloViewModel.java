@@ -43,7 +43,7 @@ public class CicloViewModel  extends java.util.Observable {
 
     public void setCiclos(List<Ciclo> ciclos) {
         this.ciclos = new DefaultComboBoxModel(ciclos.toArray());
-        this.commit();
+       this.commit();
         
         
     }

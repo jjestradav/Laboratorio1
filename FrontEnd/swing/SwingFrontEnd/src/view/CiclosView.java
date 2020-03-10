@@ -25,6 +25,7 @@ public class CiclosView extends javax.swing.JFrame  implements java.util.Observe
     
     public CiclosView() {
         initComponents();
+    
     }
 
     public CiclosController getController() {
@@ -37,16 +38,18 @@ public class CiclosView extends javax.swing.JFrame  implements java.util.Observe
 
     public CicloViewModel getModel() {
         return model;
+        
     }
 
     public void setModel(CicloViewModel model) {
         this.model = model;
+          model.addObserver(this);
     }
     
     @Override
        public void update(java.util.Observable updatedModel,Object parametros){
-      
            this.updateComboBoxes();
+          
        }
       
        private Ciclo toCiclo(){
@@ -122,7 +125,9 @@ public class CiclosView extends javax.swing.JFrame  implements java.util.Observe
      */
   void updateComboBoxes(){
       
-  this.controller.setComboBox();
+  //this.controller.setComboBox();
+  //System.out.println("ADIOS");
+  //System.out.println(this.controller.getModel().getCiclos());
   this.ciclosComboBox.setModel(this.controller.getModel().getCiclos());
   
   }

@@ -48,8 +48,10 @@ public class CursosViewModel extends java.util.Observable {
     }
 
     public void setCursos(List<Curso> cursos) {
+        if (cursos != null){
          this.cursos = new DefaultComboBoxModel(cursos.toArray());
         this.commit();
+        }
         
     }
     
