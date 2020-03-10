@@ -28,6 +28,7 @@ public class ServiceGrupo {
     
     private Service service= Service.getInstance();
     private static final String LISTAR_PROFESOR_POR_GRUPO="{?=call grupoProfesor(?,?)}";
+    private static final String GRUPOS_POR_CURSO="{?=call grupoPorCurso(?)}";
     
         private static ServiceGrupo instance=null;
 
@@ -70,7 +71,7 @@ public class ServiceGrupo {
                List<GrupoAlumnoDTO> result=new ArrayList<>();
                while(rs.next()){
                    GrupoAlumnoDTO gruAl= new GrupoAlumnoDTO(rs.getInt("grupo"),new AlumnoDTO(rs.getString("cedula"),rs.getString("nombreAlumno")),
-                   rs.getInt("nota"));
+                   rs.getFloat("nota"));
                    result.add(gruAl);
                    
                }
@@ -110,5 +111,75 @@ public class ServiceGrupo {
         }
       
     }
+    
+      public List<Grupo> buscarGrupoPorCurso(Curso cur) throws Exception{
+        try{
+          this.service.conectar();
+          this.service.getConnection().setAutoCommit(false);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        
+        
+            CallableStatement call=null;
+        ResultSet rs=null;
+        try{
+        
+                
+               call= this.service.getConnection().prepareCall(GRUPOS_POR_CURSO);
+                call.setInt(2, cur.getCodigo() );
+               call.registerOutParameter(1, Types.OTHER);
+              
+
+               call.execute();
+               rs=(ResultSet) call.getObject(1);
+               List<Grupo> result=new ArrayList<>();
+               while(rs.next()){
+                   Grupo grup= new Grupo(rs.getInt("codigo"),new Ciclo(rs.getInt("ciclo")), new Curso(rs.getInt("curso")),
+                   new Profesor(rs.getString("profesor")),rs.getString("horario"),rs.getInt("numerogrupo"));
+                   result.add(grup);
+                   
+               }
+               return result;
+
+           
+        }
+        catch(Exception e){
+             e.printStackTrace();
+                throw e;
+        }
+        finally{
+             try{
+                if(rs != null)
+                    rs.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+            }
+              try{
+                if(call != null)
+                    call.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+            }
+               try{
+                this.service.desconectar();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw e;
+                
+            }
+        }
+      
+    }
+    
+    
+    
     
 }

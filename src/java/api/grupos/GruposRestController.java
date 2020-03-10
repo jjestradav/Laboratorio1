@@ -53,6 +53,7 @@ public class GruposRestController {
         }
         
         catch(Exception e){
+            e.printStackTrace();
               return Response  .status(500)
            //          .header("Access-Control-Allow-Origin", "*")
                         .header("Access-Control-Allow-Credentials", "true")

@@ -30,6 +30,10 @@ public class Curso {
         this.codigo = codigo;
         this.nombre = nombre;
     }
+     
+       public Curso(int codigo) {
+        this.codigo = codigo;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -65,7 +69,7 @@ public class Curso {
 
     @Override
     public String toString() {
-        return "Curso{" + "codigo=" + codigo + ", nombre=" + nombre + ", creditos=" + creditos + ", horasSemanales=" + horasSemanales + '}';
+        return this.nombre;
     }
     
     
