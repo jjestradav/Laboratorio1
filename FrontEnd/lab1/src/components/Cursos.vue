@@ -48,6 +48,7 @@ export default {
         verGrupos(codigo){
             let url='http://localhost:9090/Laboratorio1/api/grupos/gruposPorProfesor/'+
             this.profesor.cedula+'/'+codigo;
+            console.log(url);
             fetch(url,{
               mode:'cors'
             }).then(response=>response.json())
@@ -76,6 +77,7 @@ export default {
                     }
                 }
                 let array=Array.from(map.values());
+                console.log(array);
                 this.setGrupos(array);
               })
         }

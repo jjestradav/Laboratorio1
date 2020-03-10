@@ -86,7 +86,8 @@ public class CursosController {
     public void goToGrupos(Curso cur) {
 
         try {
-            List<Grupo> result = this.gruposRepo.buscarGrupoPorCurso(cur);
+            Profesor profe=(Profesor) session.getAttribute("user");
+            List<Grupo> result = this.gruposRepo.buscarGrupoPorCurso(cur,profe);
             session.setAttibute("grupos", result);
             GruposController nextView = (GruposController) session.getAttribute("gruposController");
             this.hide();
