@@ -25,3 +25,16 @@ $$;
 ALTER TABLE grupoalumno
 ALTER COLUMN nota TYPE decimal;
 
+
+
+	CREATE OR REPLACE FUNCTION grupoPorCurso( _codigocurso int, _cedula text)
+RETURNS refcursor AS $$
+DECLARE ref refcursor;
+
+BEGIN
+OPEN ref FOR select codigo,ciclo,curso,numerogrupo,horario,profesor from grupo 
+where curso=_codigocurso and profesor=_cedula;
+RETURN ref;
+END;
+$$ LANGUAGE plpgsql; 
+

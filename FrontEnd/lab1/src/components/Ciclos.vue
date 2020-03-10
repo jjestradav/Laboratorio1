@@ -57,12 +57,14 @@ export default {
          event.preventDefault();
             let url='http://localhost:9090/Laboratorio1/api/cursos/getCursos/'+this.profesor.cedula+'/'+this.selected;
             console.log(url);
+            console.log(url);
              fetch(url,{
                  mode:'cors'
              })
              .then(response=>response.json())
              .then(cursos=>{this.setCursos(cursos)})
              .then(()=>{
+               
                 this.$router.replace('/cursos');
       })
              //console.log(this.cursos);

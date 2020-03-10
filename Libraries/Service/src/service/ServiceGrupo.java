@@ -28,7 +28,7 @@ public class ServiceGrupo {
     
     private Service service= Service.getInstance();
     private static final String LISTAR_PROFESOR_POR_GRUPO="{?=call grupoProfesor(?,?)}";
-    private static final String GRUPOS_POR_CURSO="{?=call grupoPorCurso(?)}";
+    private static final String GRUPOS_POR_CURSO="{?=call grupoPorCurso(?,?)}";
     
         private static ServiceGrupo instance=null;
 
@@ -112,7 +112,7 @@ public class ServiceGrupo {
       
     }
     
-      public List<Grupo> buscarGrupoPorCurso(Curso cur) throws Exception{
+      public List<Grupo> buscarGrupoPorCurso(Curso cur,Profesor profe) throws Exception{
         try{
           this.service.conectar();
           this.service.getConnection().setAutoCommit(false);
@@ -130,6 +130,7 @@ public class ServiceGrupo {
                 
                call= this.service.getConnection().prepareCall(GRUPOS_POR_CURSO);
                 call.setInt(2, cur.getCodigo() );
+                call.setString(3, profe.getCedula() );
                call.registerOutParameter(1, Types.OTHER);
               
 
