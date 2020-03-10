@@ -32,6 +32,12 @@ const routes = [
   }
   ,
   {
+    path:'/profile',
+    name:'Profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
+  }
+  ,
+  {
     path:'/ciclos',
     name:'Ciclos',
     component: () => import(/* webpackChunkName: "ciclos" */ '../views/CiclosView.vue')

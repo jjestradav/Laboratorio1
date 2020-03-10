@@ -1,28 +1,27 @@
 <template>
-    <b-container>
-        <h2>Cursos Asignados a {{profesor.nombre}}</h2>
-    </b-container>
+  <b-container fluid="lg">
+    <Header />
+    <h2>Grupos que el profesor {{profesor.nombre}} imparte clases</h2>
+  </b-container>
 </template>
 
-<script>
-import { mapState, mapMutations } from 'vuex';
-
+<script> 
+import { mapState, mapMutations } from "vuex";
+import Header from "./Header.vue";
 export default {
-  name: 'Grupos',
+  name: "Grupos",
   data() {
-      return {
-      }
-    },
-    methods:{
-     ...mapMutations(['setProfesor','setCursos'])
-    },
-     computed:{
+    return {};
+  },
+  components: {
+    Header
+  },
+  methods: {
+    ...mapMutations(["setProfesor", "setCursos", "setGrupos"])
+  },
+  computed: {
     //...Vuex.
-    ...mapState(['profesor','cursos'])
+    ...mapState(["profesor", "cursos", "grupos"])
   }
-  }
-  
-
-
- 
-  </script>
+};
+</script>
