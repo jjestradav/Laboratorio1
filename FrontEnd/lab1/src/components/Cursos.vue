@@ -1,6 +1,6 @@
 <template>
-    
     <b-container class="container">
+    <Header/>
     <b-row>
       <br />
       <br />
@@ -36,12 +36,16 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import Header from './Header.vue';
 export default {
     name:'Cursos',
     data(){
         return{
 
         }
+    },
+    components:{
+      Header
     },
     methods:{
         ...mapMutations(["setProfesor",'setCursos','setGrupos']),
@@ -79,13 +83,14 @@ export default {
                 let array=Array.from(map.values());
                 console.log(array);
                 this.setGrupos(array);
-              })
+                console.log(array);
+                }).then(()=>{this.$router.replace('/grupos');})
         }
     },
-     computed: {
-    //...Vuex.
-    ...mapState(["profesor",'cursos','grupos'])
-  },
+      computed: {
+      //...Vuex.
+      ...mapState(["profesor",'cursos','grupos'])
+    },
   mounted:function(){
       console.log(this.cursos);
   }

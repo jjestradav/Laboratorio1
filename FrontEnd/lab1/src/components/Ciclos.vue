@@ -1,5 +1,6 @@
 <template>
   <b-container class="container">
+    <Header/>
     <b-row>
       <br />
       <br />
@@ -38,8 +39,12 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import Header from './Header.vue';
 export default {
   name: "Ciclos",
+  components:{
+    Header
+  },
   data() {
     return {
        selected:'-1', 
@@ -57,7 +62,7 @@ export default {
                  mode:'cors'
              })
              .then(response=>response.json())
-             .then(cursos=>this.setCursos(cursos))
+             .then(cursos=>{this.setCursos(cursos)})
              .then(()=>{
                
                 this.$router.replace('/cursos');

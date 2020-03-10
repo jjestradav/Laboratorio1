@@ -17,7 +17,7 @@ export default new Vuex.Store({
       state.cursos=curs;
     },
     setGrupos(state,grups){
-      state.cursos=grups
+      state.grupos=grups
     }
   },
   actions: {
