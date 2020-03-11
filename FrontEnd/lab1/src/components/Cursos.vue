@@ -56,34 +56,9 @@ export default {
             fetch(url,{
               mode:'cors'
             }).then(response=>response.json())
-              .then(gruposAlumnos=>{
-                let map=new Map();
-                for(let obj of gruposAlumnos){
-                  let estudiante={
-                        alumno:obj.alumno,
-                        nota:obj.nota
-                      }
-                  let mapObj=map.get(obj.grupo)
-                    if(mapObj === undefined){
-                      let grupo={
-                        grupo:obj.grupo,
-                        estudiantes:[]
-                      }
-                      
-                      grupo.estudiantes.push(estudiante);
-                      map.set(obj.grupo,grupo)
-                    
-                    }
-                    else{
-                      mapObj.estudiantes.push(estudiante);
-                      map.set(obj.grupo,mapObj);
-
-                    }
-                }
-                let array=Array.from(map.values());
-                console.log(array);
-                this.setGrupos(array);
-                console.log(array);
+              .then(grupos=>{
+                this.setGrupos(grupos);
+                console.log(grupos);
                 }).then(()=>{this.$router.replace('/grupos');})
         }
     },

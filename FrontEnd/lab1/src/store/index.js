@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     profesor:{},
     cursos:{},
-    grupos:[]
+    grupos:{},
+    alumnos:{}
   },
   mutations: {
     setProfesor(state,profe){
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setGrupos(state,grups){
       state.grupos=grups
+    },
+    setAlumnos(state,alum){
+      state.alumnos=alum;
     }
   },
   actions: {
