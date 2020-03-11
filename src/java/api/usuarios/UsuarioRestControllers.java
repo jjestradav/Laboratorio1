@@ -63,7 +63,16 @@ public class UsuarioRestControllers {
             }
 
         } catch (Exception e) {
-            throw new InternalServerErrorException();
+           return Response
+                        .status(500)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Credentials", "true")
+                        .header("Access-Control-Allow-Headers",
+                                "origin, content-type, accept, authorization")
+                        .header("Access-Control-Allow-Methods",
+                               "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                        .entity(e.getMessage())
+                      .build();
         }
     }
 

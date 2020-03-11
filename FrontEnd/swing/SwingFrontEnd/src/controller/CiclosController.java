@@ -91,7 +91,7 @@ public class CiclosController {
             }
 
             this.hide();
-            nextView.show();
+            nextView.show(this.view.getLocation());
 
         } catch (Exception e) {
             e.printStackTrace();

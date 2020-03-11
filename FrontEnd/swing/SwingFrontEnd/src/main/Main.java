@@ -12,6 +12,8 @@ import controller.GruposController;
 import controller.LoginController;
 import controller.NotasController;
 import data.Session;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
@@ -43,6 +45,9 @@ public class Main {
          LoginViewModel loginViewModel= new LoginViewModel();
          LoginView loginView= new LoginView();
          LoginController loginController= new LoginController(loginView,loginViewModel);
+         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+         loginController.setLocation(dim.width/2-loginController.getViewSize().width/2,
+                 dim.height/2-loginController.getViewSize().height/2);
          loginController.show();
          session.setAttibute("loginController", loginController);
          
