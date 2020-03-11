@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="container-fluid">
   <b-navbar toggleable="lg" type="dark" variant="info">
     <b-navbar-brand disabled>Gestión de Notas</b-navbar-brand>
 

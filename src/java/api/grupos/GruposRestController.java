@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.ServiceGrupo;
+import service.ServiceGrupoAlumno;
 
 /**
  *
@@ -29,6 +30,7 @@ import service.ServiceGrupo;
 public class GruposRestController {
     
     private ServiceGrupo gruposRepo=ServiceGrupo.getInstance();
+    private ServiceGrupoAlumno alumRepo=ServiceGrupoAlumno.getInstance();
     
     @GET
     @Path("/gruposPorProfesor/{cedula}/{codigo}")
@@ -39,7 +41,7 @@ public class GruposRestController {
             profe.setCedula(cedula);
             Curso cur= new Curso();
             cur.setCodigo(codigo);
-          List<GrupoAlumnoDTO> result= gruposRepo.buscarGrupoPorProfesor(profe, cur);
+          List<Grupo> result= gruposRepo.buscarGrupoPorCurso(cur, profe);
           return Response
                         .status(200)
                   //   .header("Access-Control-Allow-Origin", "*")
@@ -66,7 +68,39 @@ public class GruposRestController {
         }
     }
             
-            
+     @GET
+    @Path("/alumnosPorGrupo/{codigo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response alumnosPorGrupo(@PathParam("codigo") int codigo){
+        try{
+            Grupo cur= new Grupo();
+            cur.setCodigo(codigo);
+          List<GrupoAlumnoDTO> result= alumRepo.buscarGrupoPorProfesor(cur);
+          return Response
+                        .status(200)
+                  //   .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Credentials", "true")
+                        .header("Access-Control-Allow-Headers",
+                                "origin, content-type, accept, authorization")
+                        .header("Access-Control-Allow-Methods",
+                               "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                        .entity(result)
+                      .build();
+        }
+        
+        catch(Exception e){
+            e.printStackTrace();
+              return Response  .status(500)
+           //          .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Credentials", "true")
+                        .header("Access-Control-Allow-Headers",
+                                "origin, content-type, accept, authorization")
+                        .header("Access-Control-Allow-Methods",
+                               "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                       .entity("Error")
+                      .build();
+        }
+    }       
             
     
 }
