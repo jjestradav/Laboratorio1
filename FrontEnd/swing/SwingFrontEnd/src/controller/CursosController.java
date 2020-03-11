@@ -91,7 +91,7 @@ public class CursosController {
             session.setAttibute("grupos", result);
             GruposController nextView = (GruposController) session.getAttribute("gruposController");
             this.hide();
-            nextView.show();
+            nextView.show(this.view.getLocation());
 
         } catch (Exception e) {
             e.printStackTrace();

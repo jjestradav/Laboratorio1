@@ -8,6 +8,7 @@ package controller;
 import data.Session;
 import entity.Profesor;
 import entity.Usuario;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JFrame;
@@ -77,7 +78,7 @@ public class LoginController {
                 CiclosController nextView=(CiclosController)session.getAttribute("ciclosController");
                 if(nextView!=null){
                     this.hide();
-                    nextView.show();
+                    nextView.show(this.view.getLocation());
                 }
                     
             }
@@ -98,4 +99,12 @@ public class LoginController {
            public void show(){
         view.setVisible(true);
     }
+           
+           public void setLocation(int x, int y){
+               this.view.setLocation(x, y);
+           }
+           
+           public Dimension getViewSize(){
+               return this.view.getSize();
+           }
 }

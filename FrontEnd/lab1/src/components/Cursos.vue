@@ -10,7 +10,7 @@
       <br />
     </b-row>
     <div class="d-flex justify-content-center h-100">
-      <b-card title="Seleccione un Curso">
+      <b-card title="Seleccione un Curso" style="width:50%; max-height: 100%">
         <div class="d-flex justify-content-center form_container">
           <!--                        action="/Kronos/LoginServlet"-->
             <table  class="table table-striped table-bordered border-info">

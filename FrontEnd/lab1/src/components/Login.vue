@@ -62,6 +62,8 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+let bootbox= require('bootbox');
+require('bootstrap')
 
 export default {
   name: 'Login',
@@ -79,6 +81,7 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       let url = "http://localhost:9090/Laboratorio1/api/usuarios/login";
+      
       fetch(url, {
         method: "POST",
         headers: {
@@ -87,10 +90,13 @@ export default {
         },
         body: JSON.stringify(this.persona)
       })
-        .then(response => response.json())
-        .catch(error => {
-          console.log(error);
-        })
+        .then(response => {
+          if(!response.ok)
+               console.log(response);
+
+          return response.json()
+          })
+
         .then(profe=>{
             console.log(profe)
         this.profe.cedula=profe.cedula;
@@ -105,6 +111,11 @@ export default {
                this.$router.replace('/ciclos');
                 
             })
+                    .catch(error => {
+          bootbox.alert(' Por favor verifique los datos');
+
+          console.log(error);
+        })
 
     },
     ...mapMutations(['setProfesor'])

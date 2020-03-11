@@ -1,6 +1,6 @@
 <template>
    <div>
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
     <b-navbar-brand disabled>Gestión de Notas</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

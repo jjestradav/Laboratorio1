@@ -9,8 +9,8 @@
       <br />
       <br />
     </b-row>
-    <div class="d-flex justify-content-center h-100">
-      <b-card title="Seleccione un Ciclo">
+    <div class="d-flex justify-content-center ">
+      <b-card class="h-500" title="Seleccione un Ciclo" style="width:50%; max-height: 100%">
         <div class="d-flex justify-content-center form_container">
           <!--                        action="/Kronos/LoginServlet"-->
           <b-form  @submit="verCursos">

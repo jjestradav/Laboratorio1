@@ -38,3 +38,18 @@ RETURN ref;
 END;
 $$ LANGUAGE plpgsql; 
 
+
+
+
+	CREATE OR REPLACE FUNCTION getCiclos()
+RETURNS refcursor AS $$
+DECLARE
+ref refcursor;
+BEGIN
+OPEN ref FOR SELECT codigo,anho,numeroCiclo,fechaInicio,fechaFinal FROM Ciclo where
+fechaInicio<= current_date and fechaFinal>=current_date;
+RETURN ref;
+END;
+$$ LANGUAGE plpgsql;
+
+
